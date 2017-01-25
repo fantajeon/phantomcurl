@@ -193,6 +193,12 @@ if (g_opts.with_request_responses == true) {
     page.onResourceReceived = function(responseData) {
         all_responses.push(responseData);
     };
+} else {
+    page.onResourceReceived = function(responseData) {
+        if( responseData.url == page.url ) {
+            httpStatus = responseData.status;
+        }
+    };
 }
 
 var timestamp_start = get_timestamp();
@@ -239,14 +245,6 @@ if (undefined !== g_opts.timeout_sec) {
     }, g_opts.timeout_sec * 1000);
 }
 
-page.onResourceReceived = function(resource) {
-    if( resource.url == page.url ) {
-        httpStatus = resource.status;
-    }
-
-    downloaded_url.push(resource.url);
-};
-
 
 page.open(g_opts.url, g_opts.method, g_opts.post_full_str,
           function (page_status) {
@@ -278,7 +276,6 @@ page.open(g_opts.url, g_opts.method, g_opts.post_full_str,
             version:        VERSION,
             command_line:   system.args,
             status:         httpStatus,
-            downloaded_url: downloaded_url,
         };
 
         g_output_data = output_data;
