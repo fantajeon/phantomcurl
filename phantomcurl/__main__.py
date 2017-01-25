@@ -68,7 +68,7 @@ def get_options():
 
     opts = p.parse_args()
     if not opts.version and not opts.url:
-        print 'Missing URL'
+        print ('Missing URL')
         p.print_usage()
         sys.exit(-1)
     if opts.landing_page:
@@ -83,7 +83,7 @@ def get_options():
 
 
 def die(message):
-    print 'Error: {}'.format(message)
+    print ('Error: {}'.format(message))
     sys.exit(-1)
 
 
@@ -101,14 +101,14 @@ def main():
     set_logging()
     opts = get_options()
     if opts.version:
-        print phantomcurl.version.current
+        print (phantomcurl.version.current)
         sys.exit(0)
 
     if opts.header:
         try:
             headers = dict(putils.valid_data_pairs(opts.header))
         except ValueError as err:
-            print '{}: {}'.format(ERR_MSG_BAD_HEADERS, err)
+            print ('{}: {}'.format(ERR_MSG_BAD_HEADERS, err))
             sys.exit(-1)
     else:
         headers = None
