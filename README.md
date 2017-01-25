@@ -1,4 +1,4 @@
-PhantomCurl
+PhantomCurl(Python3)
 ===========
 
 Python wrapper around [PhantomJS][phantomjs] headless browser for advanced web scraping.
