@@ -175,7 +175,8 @@ class PhantomCurl(object):
         logger.debug('out: {:.1f}KB, err: {:.1f}KB'.format(
             len(out)/1000.0, len(err)/1000.0))
 
-        out = out.decode('utf-8')
+        out = out.decode()
+
         if self._debug:
             logger.debug('stderr from phantomjs:')
             logger.debug(err)

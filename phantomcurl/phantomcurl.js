@@ -164,6 +164,7 @@ var iframes_deep_inspection = function(page)
 var g_opts = parse_arguments();
 var all_requests = undefined;
 var all_responses = undefined;
+var httpStatus = undefined;
 
 var page = require('webpage').create();
 
@@ -237,6 +238,14 @@ if (undefined !== g_opts.timeout_sec) {
     }, g_opts.timeout_sec * 1000);
 }
 
+page.onResourceReceived = function(resource) {
+    console.log("onResourceReceived:" + resource.url);
+    if( resource.url == page.url ) {
+        httpStatus = resource.status;
+    }
+};
+
+
 page.open(g_opts.url, g_opts.method, g_opts.post_full_str,
           function (page_status) {
     var process_page = function() {
@@ -252,6 +261,10 @@ page.open(g_opts.url, g_opts.method, g_opts.post_full_str,
         var content_out = (g_opts.with_content ? page.content : undefined);
         var timestamps =  {start: timestamp_start, end: get_timestamp()};
 
+        if( httpStatus == undefined ) {
+            httpStatus = "unknown";
+        }
+
         var output_data = {
             url:            page.url,
             original_url:   g_opts.url,
@@ -261,7 +274,8 @@ page.open(g_opts.url, g_opts.method, g_opts.post_full_str,
             timestamps:     timestamps,
             frames:         frames,
             version:        VERSION,
-            command_line:   system.args
+            command_line:   system.args,
+            status:         httpStatus,
         };
 
         g_output_data = output_data;
