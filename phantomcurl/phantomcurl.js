@@ -44,6 +44,7 @@ var OPT_CUSTOM_HEADERS_JSON = '--custom-headers-json'
 /*************************************************************************/
 
 var system = require( 'system' );
+var downloaded_url = [];
 
 
 var die = function(message) {
@@ -239,10 +240,11 @@ if (undefined !== g_opts.timeout_sec) {
 }
 
 page.onResourceReceived = function(resource) {
-    console.log("onResourceReceived:" + resource.url);
     if( resource.url == page.url ) {
         httpStatus = resource.status;
     }
+
+    downloaded_url.push(resource.url);
 };
 
 
@@ -276,6 +278,7 @@ page.open(g_opts.url, g_opts.method, g_opts.post_full_str,
             version:        VERSION,
             command_line:   system.args,
             status:         httpStatus,
+            downloaded_url: downloaded_url,
         };
 
         g_output_data = output_data;
