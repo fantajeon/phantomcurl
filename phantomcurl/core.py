@@ -1,3 +1,4 @@
+import pdb
 import json
 import os
 import re
@@ -173,6 +174,8 @@ class PhantomCurl(object):
         out, err = command.call(cmds, timeout=timeout_thread)
         logger.debug('out: {:.1f}KB, err: {:.1f}KB'.format(
             len(out)/1000.0, len(err)/1000.0))
+
+        out = out.decode('utf-8')
         if self._debug:
             logger.debug('stderr from phantomjs:')
             logger.debug(err)
